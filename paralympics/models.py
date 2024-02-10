@@ -1,18 +1,12 @@
-
-import os
-
-from flask import Flask
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+# Adapted from https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/quickstart/#define-models
+from typing import List
+from sqlalchemy import Integer, String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from paralympics import db
 
 
-class User(db.Model):
-    id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(db.Text, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(db.Text, unique=True, nullable=False)
-
-
+# This uses the latest syntax for SQLAlchemy, older tutorials will show different syntax
+# SQLAlchemy provide an __init__ method for each model, so you do not need to declare this in your code
 class Region(db.Model):
     __tablename__ = "region"
     NOC: Mapped[str] = mapped_column(db.Text, primary_key=True)
@@ -51,15 +45,3 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     email: Mapped[str] = mapped_column(db.Text, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(db.Text, unique=True, nullable=False)
-
-    def __init__(self, email: str, password: str):
-        """
-        Create a new User object using hashing the plain text password.
-        :type password_string: str
-        :type email: str
-        :returns None
-        """
-        self.email = email
-        self.password = password
-
-
